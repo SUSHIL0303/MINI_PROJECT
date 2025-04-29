@@ -141,6 +141,16 @@ if phone_number:
 
                 save_patient_data(patient_data)
 
+            # Add button to get health report
+            if st.button("Get Health Report"):
+                response = requests.post("http://localhost:8000/generate_report", json={"phone_number": phone_number})
+                if response.status_code == 200:
+                    report = response.json()['health_report']
+                    st.subheader("🩺 Patient Health Report:")
+                    st.success(report)
+                else:
+                    st.error("Failed to generate health report.")
+
     else:  # Patient does not exist, request data
         with right_column:
             st.write("Patient not found. Please enter the following details to register:")
